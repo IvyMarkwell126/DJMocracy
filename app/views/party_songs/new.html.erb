@@ -1,5 +1,14 @@
-<h1>New Party Song</h1>
+<h1>Select A Date</h1>
 
-<%= render 'form', party_song: @party_song %>
+<form>
+Date<br>
+<input type ="date" name = "date" id = "date"><br>
+Number of Songs <br>
+<input type = "number" name = "songsReturned" id="numSongs">
+<input type = "button" value = "Let's Party">
+
+</form>
+
+<!--<%= render 'form', party_song: @party_song %> -->
 
 <%= link_to 'Back', party_songs_path %>
