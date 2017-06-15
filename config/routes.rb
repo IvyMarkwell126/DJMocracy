@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
+  get 'home/index'
+
     resources :playlists
 
-    root 'playlists#index'
+    root 'home#index'
 end
