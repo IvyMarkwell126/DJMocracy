@@ -1,0 +1,32 @@
+<%= form_with(model: party_song, local: true) do |form| %>
+  <% if party_song.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(party_song.errors.count, "error") %> prohibited this party_song from being saved:</h2>
+
+      <ul>
+      <% party_song.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :party_id %>
+    <%= form.number_field :party_id, id: :party_song_party_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :song_id %>
+    <%= form.number_field :song_id, id: :party_song_song_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :votes %>
+    <%= form.number_field :votes, id: :party_song_votes %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

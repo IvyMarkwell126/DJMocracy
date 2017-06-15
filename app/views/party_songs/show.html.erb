@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Party:</strong>
+  <%= @party_song.party_id %>
+</p>
+
+<p>
+  <strong>Song:</strong>
+  <%= @party_song.song_id %>
+</p>
+
+<p>
+  <strong>Votes:</strong>
+  <%= @party_song.votes %>
+</p>
+
+<%= link_to 'Edit', edit_party_song_path(@party_song) %> |
+<%= link_to 'Back', party_songs_path %>

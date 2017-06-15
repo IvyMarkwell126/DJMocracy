@@ -1,0 +1,2 @@
+class PartySong < ApplicationRecord
+end
