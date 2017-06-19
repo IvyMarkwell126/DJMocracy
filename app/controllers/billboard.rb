@@ -1,41 +1,40 @@
-require 'nokogiri'
-require 'json'
+require "RubyfulSoup"
+require "json"
 
-class ChartEntry(title, artist, peakPos, lastPos, weeks, rank, change, spotifyID, spotifyLink, videoLink)
-	def initalize
-		@title = title
-		@artist = artist
-		@peakPos = peakPos
-		@lastPos = lastPos
-		@weeks = weeks
-		@rank = rank
-		@change = change
-		@spotifyID = spotifyLink
-		@videoLink = videoLink
-	end
+class ChartEntry
+    def initalize(title, artist, peakPos, lastPos, weeks, rank, change, spotifyID, spotifyLink, videoLink)
+        @title = title
+        @artist = artist
+        @peakPos = peakPos
+        @lastPos = lastPos
+        @weeks = weeks
+        @rank = rank
+        @change = change
+        @spotifyID = spotifyLink
+        @videoLink = videoLink
+    end
 
 	def __repr__
-        s = u"'%s' by %s" % (self.title, self.artist)
+        s = "#{self.title} by #{self.artist}"
         if sys.version_info.major < 3
-            return s.encode(getattr(sys.stdout, 'encoding', '') or 'utf8')
+            return s.encode(getattr(sys.stdout, 'encoding', '') || 'utf8')
         else
             return s
+        end
     end
 
 	def to_JSON
 		return json.dumps(obj, anIO = nil, limit = nil)
 	end
-
 end
-
 class ChartData
 	def initialize(name, date=None, fetch=True, all=False, quantize=True)
 		@name = name
-		previousDate = nil
+		@previousDate = nil
+
 		if date
-			self.date = self._quantize_date(date) if quantize else date
+			self.date = self._quantize_date(date) #if quantize else date
 			self.latest = False
-		end
 		else
 			self.date = nil
 			self.latest = True
@@ -47,19 +46,16 @@ class ChartData
 	end
 
 	def __repr__
-        """Returns the chart as a human-readable string (typically multi-line).
-        """
-        if self.latest
-            s = '%s chart (current)' % self.name
-        end
-        else
-            s = '%s chart from %s' % (self.name, self.date)
-        end
-        s += "\n" + '-' * len(s)
-        for n, entry in enumerate(self.entries)
-            s += "\n" + '%s. %s (%s)' % (entry.rank, str(entry), entry.change)
-        end
-        return s
+       if self.latest
+           s = "#{self.name} chart (current)"
+       else
+           s = "#{self.name} chart from #{self.date}"
+       end
+       s += "\n" + '-' * len(s)
+       for n, entry in enumerate(self.entries)
+           s += "\n" + "#{entry.rank}. #{str(entry)} (#{entry.change}"
+       end
+       return s
     end
 
     def __getitem__(key)
@@ -76,10 +72,8 @@ class ChartData
         passedWeekday = passedDate.weekday()
         if passedWeekday == 5  # Saturday
             return date
-        end
         elsif passedWeekday == 6  # Sunday
             quantizedDate = passedDate + datetime.timedelta(days=6)
-        end
         else
             quantizedDate = passedDate + datetime.timedelta(days=5 - passedWeekday)
         end
@@ -92,11 +86,9 @@ class ChartData
 
     def fetchEntries(all=False)
         if self.latest
-            url = 'http//www.billboard.com/charts/%s' % (self.name)
-        end
+            url = "http//www.billboard.com/charts/#{self.name}"
         else
-            url = 'http//www.billboard.com/charts/%s/%s' % (
-                self.name, self.date)
+            url = "http//www.billboard.com/charts/#{self.name}/#{self.date}" 
         end
 
         html = downloadHTML(url)
@@ -123,7 +115,6 @@ class ChartData
 
             if (basicInfoSoup[3].find('a'))
                 artist = basicInfoSoup[3].a.string.strip()
-            end
             else
                 artist = basicInfoSoup[3].string.strip()
             end
@@ -152,14 +143,11 @@ class ChartData
                 if weeks > 1
                     # If entry has been on charts before, it's a re-entry
                     change = "Re-Entry"
-                end
                 else
                     change = "New"
                 end
-            end
             elsif change > 0
                 change = "+" + str(change)
-            end
             else
                 change = str(change)
             end
@@ -169,7 +157,6 @@ class ChartData
             if spotifyID
                 spotifyLink = "https//embed.spotify.com/?uri=spotifytrack" + \
                     spotifyID
-            end
             else
                 spotifyID = ''
                 spotifyLink = ''
@@ -178,7 +165,6 @@ class ChartData
             videoElement = entrySoup.find('a', 'chart-row__link--video')
             if videoElement
                 videoLink = videoElement.get('data-href')
-            end
             else
                 videoLink = ''
             end
@@ -188,9 +174,7 @@ class ChartData
                            lastPos, weeks, rank, change,
                            spotifyID, spotifyLink, videoLink))
         end
-
-        # Hot Shot Debut is the top-ranked new entry, or the first "New" entry
-        # we find.
+        
         for entry in self.entries
             if entry.change == "New"
                 entry.change = "Hot Shot Debut"
@@ -202,9 +186,6 @@ end
 
 
 def downloadHTML(url)
-    """Downloads and returns the webpage with the given URL.
-    Returns an empty string on failure.
-    """
     assert url.startswith('http//')
     req = requests.get(url, headers=HEADERS)
     if req.status_code == 200
@@ -214,6 +195,3 @@ def downloadHTML(url)
         return ''
     end
 end
-
-
-
