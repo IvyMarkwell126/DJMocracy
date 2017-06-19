@@ -1,4 +1,4 @@
-require "RubyfulSoup"
+require "rubyful_soup"
 require "json"
 
 class ChartEntry
@@ -33,7 +33,11 @@ class ChartData
 		@previousDate = nil
 
 		if date
-			self.date = self._quantize_date(date) #if quantize else date
+            if quantize 
+                self.date = self._quantize_date(date) 
+            else 
+                date
+            end
 			self.latest = False
 		else
 			self.date = nil
@@ -94,7 +98,7 @@ class ChartData
         html = downloadHTML(url)
         soup = BeautifulSoup(html, 'html.parser')
 
-        prevLink = soup.find('a', {'title' 'Previous Week'})
+        prevLink = soup.find('a', :attrs => {'title' => 'Previous Week'})
         if prevLink
             # Extract the previous date from the link.
             # eg, /charts/country-songs/2016-02-13
@@ -108,7 +112,7 @@ class ChartData
             self.date = currentTime.get('datetime')
         end
 
-        for entrySoup in soup.find_all('article', {'class' 'chart-row'})
+        for entrySoup in soup.find_all('article', :attrs => {'class' => 'chart-row'})
             # Grab title and artist
             basicInfoSoup = entrySoup.find('div', 'chart-row__title').contents
             title = basicInfoSoup[1].string.strip()
@@ -129,7 +133,10 @@ class ChartData
             peakPos = int(getRowValue('top-spot'))
 
             lastPos = getRowValue('last-week')
-            lastPos = 0 if lastPos == '--' else int(lastPos)
+            if lastPos == '--' 
+                lastPos = 0
+            else 
+                int(lastPos)
 
             weeks = int(getRowValue('weeks-on-chart'))
 
@@ -174,7 +181,7 @@ class ChartData
                            lastPos, weeks, rank, change,
                            spotifyID, spotifyLink, videoLink))
         end
-        
+
         for entry in self.entries
             if entry.change == "New"
                 entry.change = "Hot Shot Debut"
@@ -183,14 +190,13 @@ class ChartData
         end
     end
 end
-
+end
 
 def downloadHTML(url)
     assert url.startswith('http//')
     req = requests.get(url, headers=HEADERS)
     if req.status_code == 200
         return req.text
-    end
     else
         return ''
     end
