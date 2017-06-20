@@ -1,4 +1,4 @@
-require "rubyful_soup"
+require "nokogiri"
 require "json"
 
 class ChartEntry
@@ -95,29 +95,28 @@ class ChartData
             url = "http//www.billboard.com/charts/#{self.name}/#{self.date}" 
         end
 
-        html = downloadHTML(url)
-        soup = BeautifulSoup(html, 'html.parser')
+        page = nokogiri::HTML(open(url))
 
-        prevLink = soup.find('a', :attrs => {'title' => 'Previous Week'})
+        prevLink = page.css("a[title = 'Previous Week']")
         if prevLink
             # Extract the previous date from the link.
             # eg, /charts/country-songs/2016-02-13
             self.previousDate = prevLink.get('href').split('/')[-1]
         end
 
-        currentTime = soup.find('time')
+        currentTime = page.css('time')
         if currentTime
             # Extract the previous date from the link.
             # eg, /charts/country-songs/2016-02-13
             self.date = currentTime.get('datetime')
         end
 
-        for entrySoup in soup.find_all('article', :attrs => {'class' => 'chart-row'})
+        for entrySoup in page.css("article[class = 'chart-row']")
             # Grab title and artist
-            basicInfoSoup = entrySoup.find('div', 'chart-row__title').contents
+            basicInfoSoup = page.css("div['class = chart-row__title']").contents
             title = basicInfoSoup[1].string.strip()
 
-            if (basicInfoSoup[3].find('a'))
+            if (basicInfoSoup[3].css('a'))
                 artist = basicInfoSoup[3].a.string.strip()
             else
                 artist = basicInfoSoup[3].string.strip()
@@ -169,7 +168,7 @@ class ChartData
                 spotifyLink = ''
             end
 
-            videoElement = entrySoup.find('a', 'chart-row__link--video')
+            videoElement = entrySoup.css("a[class='chart-row__link--video']")
             if videoElement
                 videoLink = videoElement.get('data-href')
             else
