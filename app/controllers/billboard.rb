@@ -1,4 +1,5 @@
 require "nokogiri"
+require "open-uri"
 require "json"
 
 class ChartEntry
@@ -15,7 +16,7 @@ class ChartEntry
     end
 
 	def __repr__
-        s = "#{self.title} by #{self.artist}"
+        s = "#{@title} by #{@artist}"
         if sys.version_info.major < 3
             return s.encode(getattr(sys.stdout, 'encoding', '') || 'utf8')
         else
@@ -27,47 +28,49 @@ class ChartEntry
 		return json.dumps(obj, anIO = nil, limit = nil)
 	end
 end
+
 class ChartData
-	def initialize(name, date=None, fetch=True, all=False, quantize=True)
-		@name = name
-		@previousDate = nil
+	def initialize(names, date=nil, fetch=true, all=false, quantize=true)
+		@names = names
+        @previousDate = nil
 
 		if date
             if quantize 
-                self.date = self._quantize_date(date) 
+                @date = self._quantize_date(date) 
             else 
                 date
             end
-			self.latest = False
+			@latest = false
 		else
-			self.date = nil
-			self.latest = True
+			@date = nil
+			@latest = true
 		end
-		self.entries = []
+		@entries = []
 		if fetch
 			self.fetchEntries(all=all)
 		end
 	end
 
 	def __repr__
-       if self.latest
-           s = "#{self.name} chart (current)"
+       if @latest
+           s = "#{@names} chart (current)"
        else
-           s = "#{self.name} chart from #{self.date}"
+           s = "#{@names} chart from #{@date}"
        end
        s += "\n" + '-' * len(s)
-       for n, entry in enumerate(self.entries)
+       puts "#{s}"
+       for n, entry in enumerate(@entries)
            s += "\n" + "#{entry.rank}. #{str(entry)} (#{entry.change}"
        end
        return s
     end
 
     def __getitem__(key)
-        return self.entries[key]
+        return @entries[key]
     end
 
     def __len__
-        return self.entries.length
+        return @entries.length
     end
 
     def _quanitize_date(date)
@@ -88,33 +91,35 @@ class ChartData
         return json.dumps(sobj, anIO = nil, limit = nil)
     end
 
-    def fetchEntries(all=False)
-        if self.latest
-            url = "http//www.billboard.com/charts/#{self.name}"
+    def fetchEntries(all=false)
+        if @latest
+            url = "http://www.billboard.com/charts/#{@names}"
         else
-            url = "http//www.billboard.com/charts/#{self.name}/#{self.date}" 
+            url = "http://www.billboard.com/charts/#{@names}/#{@date}" 
         end
 
-        page = nokogiri::HTML(open(url))
+        page = Nokogiri::HTML(open(url).read)
 
         prevLink = page.css("a[title = 'Previous Week']")
         if prevLink
             # Extract the previous date from the link.
             # eg, /charts/country-songs/2016-02-13
-            self.previousDate = prevLink.get('href').split('/')[-1]
+            @previousDate = prevLink.css('a').map { |link| link['href'] }[0].split('/')[-1]
         end
 
         currentTime = page.css('time')
         if currentTime
             # Extract the previous date from the link.
             # eg, /charts/country-songs/2016-02-13
-            self.date = currentTime.get('datetime')
+            @date = currentTime.css('datetime')
         end
 
+        puts "#{page.css("article")}"
         for entrySoup in page.css("article[class = 'chart-row']")
             # Grab title and artist
             basicInfoSoup = page.css("div['class = chart-row__title']").contents
             title = basicInfoSoup[1].string.strip()
+            puts "#{title}"
 
             if (basicInfoSoup[3].css('a'))
                 artist = basicInfoSoup[3].a.string.strip()
@@ -122,8 +127,8 @@ class ChartData
                 artist = basicInfoSoup[3].string.strip()
             end
 
-            def getRowValue(rowName)
-                selector = 'div.chart-row__' + rowName + ' .chart-row__value'
+            def getRowValue(rowNames)
+                selector = 'div.chart-row__' + rowNames + ' .chart-row__value'
                 return entrySoup.select_one(selector).string.strip()
             end
 
@@ -161,7 +166,7 @@ class ChartData
             # Get spotify link for this track
             spotifyID = entrySoup.get('data-spotifyid')
             if spotifyID
-                spotifyLink = "https//embed.spotify.com/?uri=spotifytrack" + \
+                spotifyLink = "https://embed.spotify.com/?uri=spotifytrack" + \
                     spotifyID
             else
                 spotifyID = ''
@@ -175,13 +180,13 @@ class ChartData
                 videoLink = ''
             end
 
-            self.entries.append(
+            @entries.append(
                 ChartEntry(title, artist, peakPos,
                            lastPos, weeks, rank, change,
                            spotifyID, spotifyLink, videoLink))
         end
 
-        for entry in self.entries
+        for entry in @entries
             if entry.change == "New"
                 entry.change = "Hot Shot Debut"
                 break
@@ -192,7 +197,7 @@ end
 end
 
 def downloadHTML(url)
-    assert url.startswith('http//')
+    assert url.startswith('http://')
     req = requests.get(url, headers=HEADERS)
     if req.status_code == 200
         return req.text
