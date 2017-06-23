@@ -3,7 +3,9 @@ require "open-uri"
 require "json"
 
 class ChartEntry
-    def initalize(title, artist, peakPos, lastPos, weeks, rank, change, spotifyID, spotifyLink, videoLink)
+    attr_accessor :title, :artist, :peakPos, :lastPos, :weeks, :rank, :change
+
+    def initialize(title, artist, peakPos, lastPos, weeks, rank, change)
         @title = title
         @artist = artist
         @peakPos = peakPos
@@ -11,8 +13,6 @@ class ChartEntry
         @weeks = weeks
         @rank = rank
         @change = change
-        @spotifyID = spotifyLink
-        @videoLink = videoLink
     end
 
 	def __repr__
@@ -30,6 +30,8 @@ class ChartEntry
 end
 
 class ChartData
+    attr_accessor :names, :entries
+
 	def initialize(names, date=nil, fetch=true, all=false, quantize=true)
 		@names = names
         @previousDate = nil
@@ -58,7 +60,7 @@ class ChartData
            s = "#{@names} chart from #{@date}"
        end
        s += "\n" + '-' * len(s)
-       puts "#{s}"
+
        for n, entry in enumerate(@entries)
            s += "\n" + "#{entry.rank}. #{str(entry)} (#{entry.change}"
        end
@@ -114,41 +116,42 @@ class ChartData
             @date = currentTime.css('datetime')
         end
 
-        puts "#{page.css("article")}"
-        for entrySoup in page.css("article[class = 'chart-row']")
+        i = 0
+        for @entrySoup in page.css("article.chart-row")
+
+            #puts "#{page.css("article.chart-row")[1]}"
+
             # Grab title and artist
-            basicInfoSoup = page.css("div['class = chart-row__title']").contents
-            title = basicInfoSoup[1].string.strip()
-            puts "#{title}"
+            basicInfoSoup = page.css("div.chart-row__title")
+            title = basicInfoSoup[i].css("h2.chart-row__song").inner_html
 
             if (basicInfoSoup[3].css('a'))
-                artist = basicInfoSoup[3].a.string.strip()
+                artist = basicInfoSoup[i].css("a").inner_html.strip().gsub /&amp;/, ""
             else
-                artist = basicInfoSoup[3].string.strip()
+                artist = basicInfoSoup[i].inner_html.strip().gsub /&amp;/, ""
             end
 
             def getRowValue(rowNames)
                 selector = 'div.chart-row__' + rowNames + ' .chart-row__value'
-                return entrySoup.select_one(selector).string.strip()
+                return @entrySoup.css(selector).inner_text.strip()
             end
 
             # Grab week data (peak rank, last week's rank, total weeks on
             # chart)
-            peakPos = int(getRowValue('top-spot'))
+            peakPos = getRowValue('top-spot').to_i
 
             lastPos = getRowValue('last-week')
             if lastPos == '--' 
                 lastPos = 0
             else 
-                int(lastPos)
+                (lastPos).to_i
 
-            weeks = int(getRowValue('weeks-on-chart'))
+            weeks = getRowValue('weeks-on-chart').to_i
 
             # Get current rank
-            rank = int(
-                entrySoup.select_one('.chart-row__current-week').string.strip())
+            rank = @entrySoup.css('.chart-row__current-week').to_s.strip().to_i
 
-            change = lastPos - rank
+            change = lastPos.to_i - rank
             if lastPos == 0
                 # New entry
                 if weeks > 1
@@ -158,40 +161,17 @@ class ChartData
                     change = "New"
                 end
             elsif change > 0
-                change = "+" + str(change)
+                change = "+" + change.to_s
             else
-                change = str(change)
+                change = change.to_s
             end
 
-            # Get spotify link for this track
-            spotifyID = entrySoup.get('data-spotifyid')
-            if spotifyID
-                spotifyLink = "https://embed.spotify.com/?uri=spotifytrack" + \
-                    spotifyID
-            else
-                spotifyID = ''
-                spotifyLink = ''
-            end
-
-            videoElement = entrySoup.css("a[class='chart-row__link--video']")
-            if videoElement
-                videoLink = videoElement.get('data-href')
-            else
-                videoLink = ''
-            end
-
-            @entries.append(
-                ChartEntry(title, artist, peakPos,
-                           lastPos, weeks, rank, change,
-                           spotifyID, spotifyLink, videoLink))
+            @entries << (
+                ChartEntry.new(title, artist, peakPos,
+                           lastPos, weeks, rank, change))
         end
 
-        for entry in @entries
-            if entry.change == "New"
-                entry.change = "Hot Shot Debut"
-                break
-            end
-        end
+        i += 1
     end
 end
 end
