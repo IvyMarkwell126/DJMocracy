@@ -38,7 +38,7 @@ class ChartData
 
 		if date
             if quantize 
-                @date = self._quantize_date(date) 
+                @date = self._quanitize_date(date) 
             else 
                 date
             end
@@ -76,17 +76,21 @@ class ChartData
     end
 
     def _quanitize_date(date)
-    	year, month, day = map(int, date.split('-'))
-        passedDate = datetime.date(year, month, day)
-        passedWeekday = passedDate.weekday()
-        if passedWeekday == 5  # Saturday
+    	date = date.split('-')
+        year = date[0].to_i
+        month = date[1].to_i
+        day = date[2].to_i
+        passedDate = DateTime.new(year, month, day)
+        passedWeekday = passedDate.wday
+
+        if passedWeekday == 6  # Saturday
             return date
-        elsif passedWeekday == 6  # Sunday
-            quantizedDate = passedDate + datetime.timedelta(days=6)
+        elsif passedWeekday == 0  # Sunday
+            quantizedDate = passedDate + 6
         else
-            quantizedDate = passedDate + datetime.timedelta(days=5 - passedWeekday)
+            quantizedDate = passedDate + (6 - passedWeekday)
         end
-        return str(quantizedDate)
+        return quantizedDate.to_s
     end
 
     def to_JSON
@@ -146,10 +150,13 @@ class ChartData
             else 
                 (lastPos).to_i
 
+
             weeks = getRowValue('weeks-on-chart').to_i
 
             # Get current rank
-            rank = @entrySoup.css('.chart-row__current-week').to_s.strip().to_i
+            puts "---------------"
+            puts "#{@entrySoup.css('.chart-row__current-week').inner_html}"
+            rank = @entrySoup.css('.chart-row__current-week').inner_html.to_i
 
             change = lastPos.to_i - rank
             if lastPos == 0
