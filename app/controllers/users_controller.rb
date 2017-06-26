@@ -24,17 +24,42 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
+      params.require(:user).permit(:name, :fb_id)
+      username = params[:user][:name]
+      fb_id = params[:user][:fb_id]
 
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+
+      #respond_to do |format| 
+      #check if the user is already in the database
+      if User.where(:fb_id => fb_id).exists?
+          @user = User.where(["fb_id = ?", fb_id]).first
+          #redirect_to @user and return
+          puts "User #{@user.name} already exists in the db"
+
+          url = url_for :controller => 'users', :action => 'show', :id => @user.id
+          data = {url: url} 
+          puts 'sending to client'
+            
+          render :json => data
+          puts 'after sending to client'
+          #format.html { redirect_to @user, notice: 'User has already been created' }
+          #format.json { redirect_to @user, notice: 'User has already been created' }
+          #format.json { render :show, status: :created, location: @user }
+          #here we need to go to a new page
+          #Possibly need to send the url necessary back to the js
+
       else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+          #create a new user
+          @user = User.new(user_params)
+
+          if @user.save
+              format.html { redirect_to @user, notice: 'User was successfully created.' }
+              format.json { render :show, status: :created, location: @user }
+          else
+              format.html { render :new }
+              format.json { render json: @user.errors, status: :unprocessable_entity }
+          end
       end
-    end
   end
 
   # PATCH/PUT /users/1

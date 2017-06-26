@@ -1,3 +1,5 @@
+console.log('in home.js finally');
+
 var bindFacebookEvents, initializeFacebookSDK, loadFacebookSDK, restoreFacebookRoot, saveFacebookRoot;
 
 $(function() {
@@ -42,6 +44,7 @@ function checkLoginState() {
 }
 
 function statusChangeCallback(response) {
+
     if(response.status === 'connected'){
         //get the user id
         var id = response['authResponse']['userID'];
@@ -54,6 +57,11 @@ function statusChangeCallback(response) {
             //send a POST request to create a user with id and name as
             //params
             var payload = JSON.stringify({"user": {"name": user_name,"fb_id": id}});
+            //console.log(payload)
+            
+            //Possible solution to stop the infinite link
+            //set a user variable saying that the user is logged in
+            //be able to set it on login, check it elsewise, and set it false on logout
 
             $.ajax({
                 type: 'POST',
@@ -62,9 +70,10 @@ function statusChangeCallback(response) {
                 contentType: 'application/json',
                 dataType: 'json',
                 success: function(data) {
-                    if(document.getElementById('home_page') != null){
-                        window.open(data['url'], '_self');
-                    }
+                    console.log('We have success!!');
+                    //window.location.pathname = data;
+                    console.log(data['url']);
+                   // window.open(data['url'], '_self');
                 },
                 error: function(data) {
                     console.log('there is an ajax error');
@@ -77,16 +86,57 @@ function statusChangeCallback(response) {
 }
 
 
-initializeFacebookSDK = function() {
-    console.log('init fb in fb.erb.js');
-      FB.init({
-              appId: '101362207154011',
-              status: true,
-              cookie: true,
-              xfbml: true,
-              version: 'v2.7'
+function initialLogin(response){
+    console.log('in initial login');
+    if(response.status === 'connected'){
+        var id = response['authResponse']['userID'];
+
+        //Make a request to Facebook to get all of the users information
+        user_path = '/' + id
+        FB.api(user_path, function(res) {
+            var user_name = res['name']
+
+            //send a POST request to create a user with id and name as
+            //params
+            var payload = JSON.stringify({"user": {"name": user_name,"fb_id": id}});
+            //console.log(payload)
+
+            //Possible solution to stop the infinite link
+            //set a user variable saying that the user is logged in
+            //be able to set it on login, check it elsewise, and set it false on logout
+
+            $.ajax({
+                type: 'POST',
+                url: '/users',
+                data: payload,
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function(data) {
+                    console.log('We have success!!');
+                    //window.location.pathname = data;
+                    console.log(data['url']);
+                    //window.open(data['url'], '_self');
+                },
+                error: function(data) {
+                    console.log('there is an ajax error');
+                    console.log(data);}
             });
+        });
+    } else {
+        console.log('Nobody is currently logged in');
+    }
+}
+
+initializeFacebookSDK = function() {
+    console.log('init facebook in home js');
+    FB.init({
+        appId: '101362207154011',
+        status: true,
+        cookie: true,
+        xfbml: true,
+        version: 'v2.7'
+    });
     FB.getLoginStatus(function(response) {
-        statusChangeCallback(response);
+        initialLogin(response);
     });
 };
