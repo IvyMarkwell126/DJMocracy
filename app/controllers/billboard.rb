@@ -84,13 +84,15 @@ class ChartData
         passedWeekday = passedDate.wday
 
         if passedWeekday == 6  # Saturday
-            return date
+            quantizedDate = passedDate
         elsif passedWeekday == 0  # Sunday
             quantizedDate = passedDate + 6
         else
             quantizedDate = passedDate + (6 - passedWeekday)
         end
-        return quantizedDate.to_s
+        
+        quantizedDate = quantizedDate.to_s[0...10]
+        return quantizedDate
     end
 
     def to_JSON
@@ -123,14 +125,12 @@ class ChartData
         i = 0
         for @entrySoup in page.css("article.chart-row")
 
-            #puts "#{page.css("article.chart-row")[1]}"
-
             # Grab title and artist
             basicInfoSoup = page.css("div.chart-row__title")
             title = basicInfoSoup[i].css("h2.chart-row__song").inner_html
 
-            if (basicInfoSoup[3].css('a'))
-                artist = basicInfoSoup[i].css("a").inner_html.strip().gsub /&amp;/, ""
+            if (basicInfoSoup[i].css('a'))
+                artist = basicInfoSoup[i].css("[class = 'chart-row__artist']").inner_html.strip.gsub /&amp;/, ""
             else
                 artist = basicInfoSoup[i].inner_html.strip().gsub /&amp;/, ""
             end
@@ -154,8 +154,10 @@ class ChartData
             weeks = getRowValue('weeks-on-chart').to_i
 
             # Get current rank
-            puts "---------------"
+            puts "-----------"
             puts "#{@entrySoup.css('.chart-row__current-week').inner_html}"
+            puts "#{artist}"
+            puts "#{title}"
             rank = @entrySoup.css('.chart-row__current-week').inner_html.to_i
 
             change = lastPos.to_i - rank
