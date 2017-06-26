@@ -1,3 +1,4 @@
+console.log('in the facebook code');
 var bindFacebookEvents, initializeFacebookSDK, loadFacebookSDK, restoreFacebookRoot, saveFacebookRoot;
 
 $(function() {
