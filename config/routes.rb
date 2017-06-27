@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :votes
+  resources :party_users
   resources :users
   resources :party_songs
   resources :parties

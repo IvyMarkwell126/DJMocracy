@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Party Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Party</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @party_users.each do |party_user| %>
+      <tr>
+        <td><%= party_user.party %></td>
+        <td><%= party_user.user %></td>
+        <td><%= link_to 'Show', party_user %></td>
+        <td><%= link_to 'Edit', edit_party_user_path(party_user) %></td>
+        <td><%= link_to 'Destroy', party_user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Party User', new_party_user_path %>
