@@ -123,12 +123,14 @@ class ChartData
         end
 
         i = 0
+
         for @entrySoup in page.css("article.chart-row")
 
             # Grab title and artist
             basicInfoSoup = page.css("div.chart-row__title")
-            title = basicInfoSoup[i].css("h2.chart-row__song").inner_html
 
+            title = basicInfoSoup[i].css("h2.chart-row__song").inner_html
+            
             if (basicInfoSoup[i].css('a'))
                 artist = basicInfoSoup[i].css("[class = 'chart-row__artist']").inner_html.strip.gsub /&amp;/, ""
             else
@@ -145,19 +147,20 @@ class ChartData
             peakPos = getRowValue('top-spot').to_i
 
             lastPos = getRowValue('last-week')
+
             if lastPos == '--' 
                 lastPos = 0
             else 
                 (lastPos).to_i
-
+            end
 
             weeks = getRowValue('weeks-on-chart').to_i
 
-            # Get current rank
-            puts "-----------"
-            puts "#{@entrySoup.css('.chart-row__current-week').inner_html}"
-            puts "#{artist}"
-            puts "#{title}"
+            #Get current rank
+            #puts "-----------"
+            #puts "#{@entrySoup.css('.chart-row__current-week').inner_html}"
+            #puts "#{artist}"
+            #puts "#{title}"
             rank = @entrySoup.css('.chart-row__current-week').inner_html.to_i
 
             change = lastPos.to_i - rank
@@ -178,11 +181,10 @@ class ChartData
             @entries << (
                 ChartEntry.new(title, artist, peakPos,
                            lastPos, weeks, rank, change))
-        end
 
-        i += 1
+            i += 1
+        end
     end
-end
 end
 
 def downloadHTML(url)
