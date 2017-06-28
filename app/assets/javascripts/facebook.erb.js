@@ -43,6 +43,7 @@ function checkLoginState() {
 }
 
 function statusChangeCallback(response) {
+    console.log('the response: ');
     console.log(response);
     if(response.status === 'connected'){
         //get the user id
