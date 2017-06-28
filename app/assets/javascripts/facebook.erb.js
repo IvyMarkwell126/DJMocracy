@@ -81,7 +81,10 @@ function statusChangeCallback(response) {
 initializeFacebookSDK = function() {
     console.log('init fb in fb.erb.js');
       FB.init({
-              appId: '101362207154011',
+              //test ID
+              //appId: '101362207154011',
+              //prod ID
+              appID: '114856275788196',
               status: true,
               cookie: true,
               xfbml: true,
