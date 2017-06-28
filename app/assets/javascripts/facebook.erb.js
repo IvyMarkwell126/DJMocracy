@@ -45,6 +45,7 @@ function checkLoginState() {
 function statusChangeCallback(response) {
     console.log('the response: ');
     console.log(response);
+    alert(response);
     if(response.status === 'connected'){
         //get the user id
         var id = response['authResponse']['userID'];
