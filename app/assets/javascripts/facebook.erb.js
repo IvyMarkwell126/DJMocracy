@@ -1,4 +1,3 @@
-console.log('in the facebook code');
 var bindFacebookEvents, initializeFacebookSDK, loadFacebookSDK, restoreFacebookRoot, saveFacebookRoot;
 
 $(function() {
@@ -43,9 +42,6 @@ function checkLoginState() {
 }
 
 function statusChangeCallback(response) {
-    console.log('the response: ');
-    console.log(response);
-    alert(response);
     if(response.status === 'connected'){
         //get the user id
         var id = response['authResponse']['userID'];
@@ -82,7 +78,6 @@ function statusChangeCallback(response) {
 
 
 initializeFacebookSDK = function() {
-    console.log('init fb in fb.erb.js');
       FB.init({
               //test ID
               //appId: '101362207154011',
@@ -93,7 +88,6 @@ initializeFacebookSDK = function() {
               xfbml: true,
               version: 'v2.7'
             });
-    console.log('getting the login status');
     FB.getLoginStatus(function(response) {
         statusChangeCallback(response);
     });
