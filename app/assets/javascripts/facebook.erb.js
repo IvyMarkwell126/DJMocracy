@@ -58,7 +58,7 @@ function statusChangeCallback(response) {
 
             $.ajax({
                 type: 'POST',
-                url: '/users',
+                url: 'https://djmocracy.heroku.com/users',
                 data: payload,
                 contentType: 'application/json',
                 dataType: 'json',
