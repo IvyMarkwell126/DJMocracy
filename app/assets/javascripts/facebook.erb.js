@@ -92,6 +92,7 @@ initializeFacebookSDK = function() {
               version: 'v2.7'
             });
     console.log('getting the login status');
+    console.log(response);
     FB.getLoginStatus(function(response) {
         statusChangeCallback(response);
     });
