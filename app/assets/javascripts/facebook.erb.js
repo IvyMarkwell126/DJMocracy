@@ -87,7 +87,7 @@ initializeFacebookSDK = function() {
               //test ID
               //appId: '101362207154011',
               //prod ID
-              appID: '114856275788196',
+              appId: '114856275788196',
               status: true,
               cookie: true,
               xfbml: true,
