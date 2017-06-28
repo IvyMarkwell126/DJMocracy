@@ -43,6 +43,7 @@ function checkLoginState() {
 }
 
 function statusChangeCallback(response) {
+    console.log(response.status);
     if(response.status === 'connected'){
         //get the user id
         var id = response['authResponse']['userID'];
@@ -82,9 +83,9 @@ initializeFacebookSDK = function() {
     console.log('init fb in fb.erb.js');
       FB.init({
               //test ID
-              appId: '101362207154011',
+              //appId: '101362207154011',
               //prod ID
-              //appID: '114856275788196',
+              appID: '114856275788196',
               status: true,
               cookie: true,
               xfbml: true,
