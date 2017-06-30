@@ -28,8 +28,14 @@ class PartiesController < ApplicationController
 
     respond_to do |format|
       if @party.save
-        format.html { redirect_to @party, notice: 'Party was successfully created.' }
-        format.json { render :show, status: :created, location: @party }
+          #If successful we need to also create a party_users entry and 
+          #also a party_songs entry
+
+
+          #for now, redirect to this party's page. Possibly have an intermediate 
+          #Make the playlist page here instead? 
+          format.html { redirect_to party_path(@party), notice: 'Party was successfully created.' }
+          format.json { render :show, status: :created, location: @party }
       else
         format.html { render :new }
         format.json { render json: @party.errors, status: :unprocessable_entity }

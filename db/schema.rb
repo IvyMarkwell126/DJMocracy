@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170627190035) do
+ActiveRecord::Schema.define(version: 20170628155523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,16 +29,6 @@ ActiveRecord::Schema.define(version: 20170627190035) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "party_users", force: :cascade do |t|
-    t.bigint "party_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["party_id", "user_id"], name: "index_party_users_on_party_id_and_user_id", unique: true
-    t.index ["party_id"], name: "index_party_users_on_party_id"
-    t.index ["user_id"], name: "index_party_users_on_user_id"
-  end
-
   create_table "songs", force: :cascade do |t|
     t.string "title"
     t.string "artist"
@@ -48,25 +38,10 @@ ActiveRecord::Schema.define(version: 20170627190035) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "fb_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "fb_id", limit: 50, null: false
-    t.string "name", limit: 50, null: false
-    t.index ["fb_id"], name: "users_fb_id_key", unique: true
   end
 
-  create_table "votes", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "party_song_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["party_song_id"], name: "index_votes_on_party_song_id"
-    t.index ["user_id", "party_song_id"], name: "index_votes_on_user_id_and_party_song_id", unique: true
-    t.index ["user_id"], name: "index_votes_on_user_id"
-  end
-
-  add_foreign_key "party_users", "parties"
-  add_foreign_key "party_users", "users"
-  add_foreign_key "votes", "party_songs"
-  add_foreign_key "votes", "users"
 end

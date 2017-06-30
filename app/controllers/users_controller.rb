@@ -51,7 +51,7 @@ class UsersController < ApplicationController
 
       else
           #create a new user
-          @user = User.new(user_params)
+          @user = User.new(name: username, fb_id: fb_id)
 
           if @user.save
               format.html { redirect_to @user, notice: 'User was successfully created.' }
