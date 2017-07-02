@@ -54,7 +54,6 @@ function statusChangeCallback(response) {
             //send a POST request to create a user with id and name as
             //params
             var payload = JSON.stringify({"user": {"name": user_name,"fb_id": id}});
-            console.log(payload);
 
             $.ajax({
                 type: 'POST',
@@ -73,7 +72,11 @@ function statusChangeCallback(response) {
             });
         });
     } else {
-        console.log('Nobody is currently logged in');
+        if(document.getElementById('home_page') === null){
+            console.log('Nobody is currently logged in');
+            var home_page = 'http://localhost:3000/';
+            window.open(home_page, '_self');
+        }
     }
 }
 
