@@ -6,9 +6,9 @@ Rails.application.routes.draw do
   resources :parties
   resources :songs
 
-  #nested users/:id/parties
-  resources :users do
+  resources :users, shallow: true do
       resources :parties
+      resources :party_users
   end
 
   get 'home/index'
