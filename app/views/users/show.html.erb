@@ -13,10 +13,8 @@
             </table>
         <br>
     </div>
-    <h2>Create a Party</h2>
     <br>
+    <%= link_to 'Create Party', new_party_path %>
     <%= link_to 'Join a Party', new_user_party_user_path(:user_id => @user.id) %>
-    <%= link_to 'New Party', new_party_path %>
-    <%= link_to 'Edit', edit_user_path(@user) %> |
-    <%= link_to 'Back', users_path %>
+    <%= link_to 'Edit', edit_user_path(@user) %>
 </div>
