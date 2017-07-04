@@ -24,11 +24,12 @@ class PartyUsersController < ApplicationController
   # POST /party_users
   # POST /party_users.json
   def create
-    @party_user = PartyUser.new(party_user_params)
-
+    user_id = params[:user_id]
+    @user = User.find(user_id) 
+    @party_user = PartyUser.new(party_id: params[:party_id], user_id: user_id)
     respond_to do |format|
       if @party_user.save
-        format.html { redirect_to @party_user, notice: 'Party user was successfully created.' }
+        format.html { redirect_to @user, notice: 'Party user was successfully created.' }
         format.json { render :show, status: :created, location: @party_user }
       else
         format.html { render :new }
@@ -69,6 +70,7 @@ class PartyUsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def party_user_params
-      params.require(:party_user).permit(:party_id, :user_id)
+      #params.require(:party_user).permit(:party_id)
+      params.require(:party_id)
     end
 end

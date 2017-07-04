@@ -10,7 +10,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-      puts 'showing the user'
   end
 
   # GET /users/new
@@ -30,25 +29,14 @@ class UsersController < ApplicationController
       fb_id = params[:user][:fb_id]
 
 
-      #respond_to do |format| 
       #check if the user is already in the database
       if User.where(:fb_id => fb_id).exists?
           @user = User.where(["fb_id = ?", fb_id]).first
-          #redirect_to @user and return
-          puts "User #{@user.name} already exists in the db"
 
           url = url_for :controller => 'users', :action => 'show', :id => @user.id
           data = {url: url} 
-          puts 'sending to client'
             
           render :json => data
-          puts 'after sending to client'
-          #format.html { redirect_to @user, notice: 'User has already been created' }
-          #format.json { redirect_to @user, notice: 'User has already been created' }
-          #format.json { render :show, status: :created, location: @user }
-          #here we need to go to a new page
-          #Possibly need to send the url necessary back to the js
-
       else
           #create a new user
           @user = User.new(name: username, fb_id: fb_id)
