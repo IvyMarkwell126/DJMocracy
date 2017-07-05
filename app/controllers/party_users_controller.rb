@@ -14,6 +14,7 @@ class PartyUsersController < ApplicationController
 
   # GET /party_users/new
   def new
+    @user = User.find(params[:user_id])
     @party_user = PartyUser.new
   end
 
