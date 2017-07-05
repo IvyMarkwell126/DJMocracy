@@ -74,7 +74,8 @@ function statusChangeCallback(response) {
     } else {
         if(document.getElementById('home_page') === null){
             console.log('Nobody is currently logged in');
-            var home_page = 'http://localhost:3000/';
+            //var home_page = 'http://localhost:3000/';
+            var home_page = 'https://djmocracy.herokuapp.com/'
             window.open(home_page, '_self');
         }
     }
