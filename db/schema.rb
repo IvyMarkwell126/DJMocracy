@@ -39,6 +39,12 @@ ActiveRecord::Schema.define(version: 20170627190035) do
     t.index ["user_id"], name: "index_party_users_on_user_id"
   end
 
+  create_table "playlists", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "songs", force: :cascade do |t|
     t.string "title"
     t.string "artist"
@@ -50,9 +56,6 @@ ActiveRecord::Schema.define(version: 20170627190035) do
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "fb_id", limit: 50, null: false
-    t.string "name", limit: 50, null: false
-    t.index ["fb_id"], name: "users_fb_id_key", unique: true
   end
 
   create_table "votes", force: :cascade do |t|

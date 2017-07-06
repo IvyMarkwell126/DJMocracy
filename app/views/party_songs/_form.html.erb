@@ -1,4 +1,4 @@
-<%= form_with(model: party_song, local: true) do |form| %>
+<%= form_with(url: party_songs_path, local: true) do |form| %>
   <% if party_song.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(party_song.errors.count, "error") %> prohibited this party_song from being saved:</h2>
@@ -12,18 +12,20 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :party_id %>
-    <%= form.number_field :party_id, id: :party_song_party_id %>
+    <%= form.label :genre %>
+    <select name='genre'>
+    <%= options_for_select([['Hot-100'], ['Country'], ['Hip-Hop'], ['Pop'], ['Rock'], ['Latin'], ['Electronic']])%>
+    </select>
   </div>
 
   <div class="field">
-    <%= form.label :song_id %>
-    <%= form.number_field :song_id, id: :party_song_song_id %>
+    <%= form.label :date %>
+    <%= date_select(:start_date, :start_date, start_year: 1953) %>
   </div>
 
   <div class="field">
-    <%= form.label :votes %>
-    <%= form.number_field :votes, id: :party_song_votes %>
+    <%= form.label :count %>
+    <%= form.number_field :count, id: :party_song_count %>
   </div>
 
   <div class="actions">

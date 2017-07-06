@@ -15,6 +15,7 @@ class PartySongsController < ApplicationController
   # GET /party_songs/new
   def new
     @party_song = PartySong.new
+    @data = Song.all
   end
 
   # GET /party_songs/1/edit
@@ -24,7 +25,17 @@ class PartySongsController < ApplicationController
   # POST /party_songs
   # POST /party_songs.json
   def create
-    @party_song = PartySong.new(party_song_params)
+    #@party_song = PartySong.new(party_song_params)
+
+    genre = params[:genre]
+    year = params[:start_date]['start_date(1i)']
+    month = normalize_date(params[:start_date]['start_date(2i)'])
+    day = normalize_date(params[:start_date]['start_date(3i)'])
+
+    date = "#{year}-#{month}-#{day}"
+    count = params[:count]
+
+    PartySong.import_from_billboard(genre, date, count)
 
     respond_to do |format|
       if @party_song.save
@@ -69,6 +80,14 @@ class PartySongsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def party_song_params
-      params.require(:party_song).permit(:party_id, :song_id, :votes)
+      params.permit(:genre, :date, :count)
+    end
+
+    def normalize_date(input) 
+      if input.to_i < 10
+        return "0#{input.to_s}"
+      else
+        return input.to_s
+      end
     end
 end

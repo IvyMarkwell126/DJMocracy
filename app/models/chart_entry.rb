@@ -1,3 +1,5 @@
+require "json"
+
 class ChartEntry
     attr_accessor :title, :artist, :peakPos, :lastPos, :weeks, :rank, :change
 
