@@ -1,5 +1,6 @@
 require "nokogiri"
 require "open-uri"
+#require "rest-client"
 require "json"
 
 class ChartData
@@ -73,12 +74,18 @@ class ChartData
     end
 
     def fetchEntries(all=false)
+        if @names != "Hot-100"
+            normalizeURL(@names)
+        end
+
         if @latest
             url = "http://www.billboard.com/charts/#{@names}"
         else
             url = "http://www.billboard.com/charts/#{@names}/#{@date}" 
         end
-        
+        puts "#{@names}"
+        puts "#{url}"
+        #user_info = RestClient.get(url, "User-Agent" => "Ruby")
         page = Nokogiri::HTML(open(url).read)
 
         prevLink = page.css("a[title = 'Previous Week']")
@@ -169,4 +176,24 @@ def downloadHTML(url)
     else
         return ''
     end
+end
+
+def normalizeURL(name)
+    if name == 'Pop'
+        @names = 'Pop-Songs'
+    elsif name == 'Rap'
+        @names = 'Rap-Song'
+    elsif name == 'Latin'
+        @names = 'Latin-Songs'
+    elsif name == 'Electronic'
+        @names = 'Dance-Electronic-Songs'
+    elsif name == 'Christian'
+        @names = 'Christian-Songs'
+    elsif name == 'Country'
+        @names = 'Country-Songs'
+    elsif name == 'Rock'
+        @names = 'Rock-Songs'
+    elsif name == 'Hip-Hop'
+        @names = 'r-b-hip-hop-songs'   
+    end    
 end
