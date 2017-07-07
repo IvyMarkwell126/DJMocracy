@@ -15,6 +15,7 @@ class PartiesController < ApplicationController
 
   # GET /parties/new
   def new
+    @user = User.find(params[:user_id]);
     @party = Party.new
   end
 
@@ -25,17 +26,21 @@ class PartiesController < ApplicationController
   # POST /parties
   # POST /parties.json
   def create
-    @party = Party.new(party_params)
+    @party = Party.new(name: params[:party][:name])
+    @user = User.find(params[:party][:user_id])
 
     respond_to do |format|
       if @party.save
           #If successful we need to also create a party_users entry and 
           #also a party_songs entry
-
+          
+          #create a party_user
+          new_party_user = PartyUser.create(party_id: @party.id, user_id: @user.id)
+          new_party_user.save!
 
           #for now, redirect to this party's page. Possibly have an intermediate 
           #Make the playlist page here instead? 
-          format.html { redirect_to party_path(@party), notice: 'Party was successfully created.' }
+          format.html { redirect_to user_party_path(@user, @party), notice: 'Party was successfully created.' }
           format.json { render :show, status: :created, location: @party }
       else
         format.html { render :new }
@@ -76,6 +81,6 @@ class PartiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def party_params
-      params.require(:party).permit(:name)
+      params.require(:party).permit(:name, :user_id)
     end
 end
