@@ -1,9 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @party.name %>
-</p>
+<h1>Welcome to <%= @party.name %> <%= @user.name %></h1>
+<br>
 
-<%= link_to 'Edit', edit_party_path(@party) %> |
 <%= link_to 'Back', @user %>
