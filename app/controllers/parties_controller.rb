@@ -10,6 +10,7 @@ class PartiesController < ApplicationController
   # GET /parties/1
   # GET /parties/1.json
   def show
+      @user = User.find(params[:user_id]);
   end
 
   # GET /parties/new
