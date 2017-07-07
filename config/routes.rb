@@ -11,6 +11,10 @@ Rails.application.routes.draw do
       resources :party_users
   end
 
+  resources :users do
+     get '/parties/:id', to: 'parties#show', as: 'party'
+  end
+
   get 'home/index'
   
   #resources :party

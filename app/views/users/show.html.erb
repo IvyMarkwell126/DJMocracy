@@ -7,7 +7,7 @@
             <table class="table">
                 <% @user_parties.each do |party| %>
                     <tr>
-                        <td><%= party.name %></td>
+                        <td><%= link_to party.name, user_party_path(@user, party.id) %></td>
                     </tr>
                 <% end %> 
             </table>
