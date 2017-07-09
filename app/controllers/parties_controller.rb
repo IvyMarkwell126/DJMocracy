@@ -84,11 +84,15 @@ class PartiesController < ApplicationController
     #if it isn't add it to Songs
     #Create a songs method that will do this for us
 
-    song_id = 1
+    song = Song.add_song(title, artist)
 
     #add a party_songs record no matter what
-    new_party_songs = PartySong.create(party_id: party_id, song_id: song_id);
+    new_party_songs = PartySong.create(party_id: party_id, song_id: song.id);
     new_party_songs.save!
+
+    #redirect back to the user's party page to see the new song show up
+
+
 
   end
 
