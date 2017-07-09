@@ -1,7 +1,6 @@
 <p id="notice"><%= notice %></p>
 <div class="center">
     <h1>Hello, <%= @user %></h1>
-    <br><br>    
     <div class="table_container"> 
         <h2>Your Parties</h2>
             <table class="table">
@@ -11,10 +10,8 @@
                     </tr>
                 <% end %> 
             </table>
-        <br>
     </div>
 
-    <br>
     <%= link_to 'Create Party', new_party_path(:user_id => @user.id) %>
     <%= link_to 'Join a Party', new_user_party_user_path(:user_id => @user.id) %>
     <%= link_to 'Edit', edit_user_path(@user) %>
