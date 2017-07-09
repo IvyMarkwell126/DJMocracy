@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   end
 
   get 'home/index'
+  post 'parties/add_song'
   
   #resources :party
     

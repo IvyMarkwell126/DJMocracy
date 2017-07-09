@@ -11,6 +11,7 @@ class PartiesController < ApplicationController
   # GET /parties/1.json
   def show
       @user = User.find(params[:user_id]);
+      @songs = @party.songs
   end
 
   # GET /parties/new
@@ -71,6 +72,24 @@ class PartiesController < ApplicationController
       format.html { redirect_to parties_url, notice: 'Party was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def add_song
+    title = params[:title]
+    artist = params[:artist]
+    user_id = params[:user_id]
+    party_id = params[:party_id]
+
+    #check if song is in the database
+    #if it isn't add it to Songs
+    #Create a songs method that will do this for us
+
+    song_id = 1
+
+    #add a party_songs record no matter what
+    new_party_songs = PartySong.create(party_id: party_id, song_id: song_id);
+    new_party_songs.save!
+
   end
 
   private
