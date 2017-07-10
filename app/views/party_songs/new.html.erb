@@ -1,14 +1,17 @@
-<h1>Select A Date</h1>
+<h1>Generate a Playlist</h1>
 
-<form>
-Date<br>
-<input type ="date" name = "date" id = "date"><br>
-Number of Songs <br>
-<input type = "number" name = "songsReturned" id="numSongs">
-<input type = "button" value = "Let's Party">
+<table>                         
+  <tr>                          
+    <th>Artist</th>
+    <th>Title</th>
+  </tr>
+<% @data.each do |data| %>
+  <tr>
+    <td><%= data.artist %></td>
+    <td><%= data.title %></td>
+  </tr>
+<% end %>
 
-</form>
-
-<!--<%= render 'form', party_song: @party_song %> -->
+<%= render 'form', party_song: @party_song %>
 
 <%= link_to 'Back', party_songs_path %>
