@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   end
 
   get 'home/index'
+  post 'parties/add_song'
+  post 'parties/leave_party'
   
   #resources :party
     

@@ -11,6 +11,7 @@ class PartiesController < ApplicationController
   # GET /parties/1.json
   def show
       @user = User.find(params[:user_id]);
+      @songs = @party.songs
   end
 
   # GET /parties/new
@@ -71,6 +72,41 @@ class PartiesController < ApplicationController
       format.html { redirect_to parties_url, notice: 'Party was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def add_song
+    title = params[:title]
+    artist = params[:artist]
+    user_id = params[:user_id]
+    party_id = params[:party_id]
+
+    @user = User.find(user_id)
+    @party = Party.find(party_id)
+
+    #check if song is in the database
+    #if it isn't add it to Songs
+    #Create a songs method that will do this for us
+
+    song = Song.add_song(title, artist)
+
+    #add a party_songs record no matter what
+    new_party_songs = PartySong.create(party_id: party_id, song_id: song.id)
+    new_party_songs.save!
+
+    #redirect back to the user's party page to see the new song show up
+    redirect_to user_party_path(@user, @party)
+  end
+
+  #route used to remove yourself from the current party
+  def leave_party
+    user_id = params[:user_id]
+    @user = User.find(user_id)
+    party_id = params[:party_id]
+    @party = Party.find(party_id)
+    
+    @user.parties.delete(@party)
+
+    redirect_to @user
   end
 
   private
