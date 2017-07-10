@@ -2,7 +2,17 @@
 
 <h1>Hi <%= @user.name %>, welcome to <%= @party.name %>!</h1>
 <h2>Your party code is <%= @party.id %></h2>
+
+<%= form_with(url: parties_leave_party_path, local: true) do |form| %>
+    <%= form.hidden_field :user_id, :value => @user.id %>
+    <%= form.hidden_field :party_id, :value => @party.id %>
+    <div class="actions">
+        <%= form.submit 'Leave Party' %>
+    </div>
+<% end %>
+
 <br><br>
+
 <%= form_with(url: parties_add_song_path, local: true) do |form| %>
 
     <%= form.hidden_field :user_id, :value => @user.id %>
@@ -30,7 +40,11 @@
         <% if @songs.length > 0 %>
             <%= @songs.each do |song| %>
                 <tr>
-                    <td><%= song.title %> - <%= song.artist %></td>
+                    <td>
+                        <%= song.title %> - <%= song.artist %>
+                        <a href="https://www.google.com">Upvote</a>
+                        <a href="https://www.google.com">Downvote</a>
+                    </td>
                 </tr>
             <% end %>
         <% end %>

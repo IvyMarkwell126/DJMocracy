@@ -87,13 +87,23 @@ class PartiesController < ApplicationController
     song = Song.add_song(title, artist)
 
     #add a party_songs record no matter what
-    new_party_songs = PartySong.create(party_id: party_id, song_id: song.id);
+    new_party_songs = PartySong.create(party_id: party_id, song_id: song.id)
     new_party_songs.save!
 
     #redirect back to the user's party page to see the new song show up
 
+  end
 
+  #route used to remove yourself from the current party
+  def leave_party
+    user_id = params[:user_id]
+    @user = User.find(user_id)
+    party_id = params[:party_id]
+    @party = Party.find(party_id)
+    
+    @user.parties.delete(@party)
 
+    redirect_to @user
   end
 
   private
