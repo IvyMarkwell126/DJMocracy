@@ -23,8 +23,8 @@ class PartySong < ApplicationRecord
 
 		our_array.each do |song|
 			puts song.to_s
-			if Song.where("artist in #{song.artist}") and Song.where("title in #{song.title}")
-				next	
+			if Song.find_by title: "#{song.title}", artist: "#{song.artist}"
+ 				next
 			end
 
 			Song.create({
