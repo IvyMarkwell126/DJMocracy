@@ -1,6 +1,54 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Welcome to <%= @party.name %> <%= @user.name %></h1>
+<h1>Hi <%= @user.name %>, welcome to <%= @party.name %>!</h1>
+<h2>Your party code is <%= @party.id %></h2>
+
+<%= form_with(url: parties_leave_party_path, local: true) do |form| %>
+    <%= form.hidden_field :user_id, :value => @user.id %>
+    <%= form.hidden_field :party_id, :value => @party.id %>
+    <div class="actions">
+        <%= form.submit 'Leave Party' %>
+    </div>
+<% end %>
+
+<br><br>
+
+<%= form_with(url: parties_add_song_path, local: true) do |form| %>
+
+    <%= form.hidden_field :user_id, :value => @user.id %>
+    <%= form.hidden_field :party_id, :value => @party.id %>
+
+    <div class="field">
+        <%= form.label :title %>
+        <%= form.text_field :title, id: :title %>
+    </div>
+    
+    <div class="field">
+        <%= form.label :artist %>
+        <%= form.text_field :artist, id: :artist %>
+    </div>
+
+    <div class="actions">
+        <%= form.submit 'Add Song' %>
+    </div>
+<% end %>
 <br>
 
-<%= link_to 'Back', @user %>
+<h2>Playlist</h2>
+<div class="table_container">
+    <table class="table">
+        <% if @songs.length > 0 %>
+            <%= @songs.each do |song| %>
+                <tr>
+                    <td>
+                        <%= song.title %> - <%= song.artist %>
+                        <a href="https://www.google.com">Upvote</a>
+                        <a href="https://www.google.com">Downvote</a>
+                    </td>
+                </tr>
+            <% end %>
+        <% end %>
+    </table>
+</div>
+
+<%= link_to 'Your Parties', @user %>

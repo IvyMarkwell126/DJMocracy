@@ -1,4 +1,5 @@
 class PartySong < ApplicationRecord
+<<<<<<< HEAD
 	class Entry
 		attr_accessor :artist, :title
 		
@@ -33,4 +34,8 @@ class PartySong < ApplicationRecord
 			})
 		end
 	end	
+=======
+    belongs_to :party
+    belongs_to :song
+>>>>>>> 3db94bede0cbd3dffa352b4e8561f279dd7d1a0f
 end
