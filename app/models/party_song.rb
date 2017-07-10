@@ -12,7 +12,7 @@ class PartySong < ApplicationRecord
 		end
 	end
 
-	def self.import_from_billboard(genre, date)
+	def self.import_from_billboard(genre, date, party_id)
 		cd = ::ChartData.new(genre, date)
 		our_array = []
 
@@ -22,15 +22,12 @@ class PartySong < ApplicationRecord
 		end	
 
 		our_array.each do |song|
-			puts song.to_s
-			if Song.find_by title: "#{song.title}", artist: "#{song.artist}"
- 				next
-			end
+			song_object = Song.add_song(song.artist, song.title)
+			song_id = song_object.id
 
-			Song.create({
-				title: song.title,
-				artist: song.artist
-			})
+			party_song = PartySong.create(party_id: party_id, song_id: song_id)
+			puts "#{party_id}"
+			party_song.save!
 		end
 	end	
 

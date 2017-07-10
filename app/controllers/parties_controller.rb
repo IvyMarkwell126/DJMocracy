@@ -41,7 +41,8 @@ class PartiesController < ApplicationController
 
           #for now, redirect to this party's page. Possibly have an intermediate 
           #Make the playlist page here instead? 
-          format.html { redirect_to user_party_path(@user, @party), notice: 'Party was successfully created.' }
+          puts "#{@user.id}555555555"
+          format.html { redirect_to new_party_song_path(:party_id => @party.id, :user_id => @user.id), notice: 'Party was successfully created.' }
           format.json { render :show, status: :created, location: @party }
       else
         format.html { render :new }

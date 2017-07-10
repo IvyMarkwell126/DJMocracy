@@ -11,6 +11,9 @@
     </div>
   <% end %>
 
+<%= form.hidden_field :party_id, :value => @party.id %>
+<%= form.hidden_field :user_id, :value => @user.id %>
+
   <div class="field">
     <%= form.label :genre %>
     <select name='genre'>

@@ -16,6 +16,8 @@ class PartySongsController < ApplicationController
   def new
     @party_song = PartySong.new
     @data = Song.all
+    @party = Party.find(params[:party_id])
+    @user = User.find(params[:user_id])
   end
 
   # GET /party_songs/1/edit
@@ -31,20 +33,16 @@ class PartySongsController < ApplicationController
     year = params[:start_date]['start_date(1i)']
     month = normalize_date(params[:start_date]['start_date(2i)'])
     day = normalize_date(params[:start_date]['start_date(3i)'])
+    party_id = params[:party_id]
+    user_id = params[:user_id]
+    puts "#{user_id}"
+    puts "~~~~~~#{party_id}"
 
     date = "#{year}-#{month}-#{day}"
 
-    PartySong.import_from_billboard(genre, date)
+    PartySong.import_from_billboard(genre, date, party_id)
+    redirect_to user_party_path(user_id, party_id)
 
-    respond_to do |format|
-      if @party_song.save
-        format.html { redirect_to @party_song, notice: 'Party song was successfully created.' }
-        format.json { render :show, status: :created, location: @party_song }
-      else
-        format.html { render :new }
-        format.json { render json: @party_song.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PATCH/PUT /party_songs/1

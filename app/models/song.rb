@@ -3,14 +3,18 @@ class Song < ApplicationRecord
     has_many :party_songs
     has_many :parties, through: :party_songs
 
-	def add_song(artist, title)
-		puts song.to_s
-		if Song.where("artist in #{artist}") and Song.where("title in #{title}")
-			return
+	def self.add_song(artist, title)
+		song = Song.find_by title: title, artist: artist
+
+		if song != nil 
+			return song
 		end
-		Song.create({
+
+		song = Song.create({
 			title: title,
 			artist: artist
 		})
+
+		return song
 	end	
 end

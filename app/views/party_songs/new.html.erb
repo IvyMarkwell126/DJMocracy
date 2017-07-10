@@ -5,12 +5,7 @@
     <th>Artist</th>
     <th>Title</th>
   </tr>
-<% @data.each do |data| %>
-  <tr>
-    <td><%= data.artist %></td>
-    <td><%= data.title %></td>
-  </tr>
-<% end %>
+</table>
 
 <%= render 'form', party_song: @party_song %>
 
