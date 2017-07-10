@@ -12,7 +12,7 @@ class PartySong < ApplicationRecord
 		end
 	end
 
-	def self.import_from_billboard(genre, date, count)
+	def self.import_from_billboard(genre, date)
 		cd = ::ChartData.new(genre, date)
 		our_array = []
 
@@ -24,7 +24,7 @@ class PartySong < ApplicationRecord
 		our_array.each do |song|
 			puts song.to_s
 			if Song.where("artist in #{song.artist}") and Song.where("title in #{song.title}")
-				next
+				next	
 			end
 
 			Song.create({

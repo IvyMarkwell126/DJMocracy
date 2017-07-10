@@ -33,9 +33,8 @@ class PartySongsController < ApplicationController
     day = normalize_date(params[:start_date]['start_date(3i)'])
 
     date = "#{year}-#{month}-#{day}"
-    count = params[:count]
 
-    PartySong.import_from_billboard(genre, date, count)
+    PartySong.import_from_billboard(genre, date)
 
     respond_to do |format|
       if @party_song.save
@@ -80,7 +79,7 @@ class PartySongsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def party_song_params
-      params.permit(:genre, :date, :count)
+      params.permit(:genre, :date)
     end
 
     def normalize_date(input) 

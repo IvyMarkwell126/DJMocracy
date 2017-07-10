@@ -1,6 +1,6 @@
 require "nokogiri"
 require "open-uri"
-#require "rest-client"
+require "rest-client"
 require "json"
 
 class ChartData
@@ -85,7 +85,9 @@ class ChartData
         end
         puts "#{@names}"
         puts "#{url}"
-        #user_info = RestClient.get(url, "User-Agent" => "Ruby")
+        response=RestClient.get url
+        user_info = RestClient.get(url, "User-Agent" => "Ruby")
+
         page = Nokogiri::HTML(open(url).read)
 
         prevLink = page.css("a[title = 'Previous Week']")
