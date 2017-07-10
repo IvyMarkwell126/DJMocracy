@@ -80,6 +80,9 @@ class PartiesController < ApplicationController
     user_id = params[:user_id]
     party_id = params[:party_id]
 
+    @user = User.find(user_id)
+    @party = Party.find(party_id)
+
     #check if song is in the database
     #if it isn't add it to Songs
     #Create a songs method that will do this for us
@@ -91,7 +94,7 @@ class PartiesController < ApplicationController
     new_party_songs.save!
 
     #redirect back to the user's party page to see the new song show up
-
+    redirect_to user_party_path(@user, @party)
   end
 
   #route used to remove yourself from the current party
