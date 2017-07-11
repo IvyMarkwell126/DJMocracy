@@ -38,7 +38,7 @@
 <div class="table_container">
     <table class="table">
         <% if @songs.length > 0 %>
-            <%= @songs.each do |song| %>
+            <% @songs.each do |song| %>
                 <tr>
                     <td>
                         <%= song.title %> - <%= song.artist %>

@@ -26,7 +26,6 @@ class PartySong < ApplicationRecord
 			song_id = song_object.id
 
 			party_song = PartySong.create(party_id: party_id, song_id: song_id)
-			puts "#{party_id}"
 			party_song.save!
 		end
 	end	

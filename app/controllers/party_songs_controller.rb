@@ -35,9 +35,6 @@ class PartySongsController < ApplicationController
     day = normalize_date(params[:start_date]['start_date(3i)'])
     party_id = params[:party_id]
     user_id = params[:user_id]
-    puts "#{user_id}"
-    puts "~~~~~~#{party_id}"
-
     date = "#{year}-#{month}-#{day}"
 
     PartySong.import_from_billboard(genre, date, party_id)
