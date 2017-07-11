@@ -45,6 +45,9 @@
                         <a href="https://www.google.com">Upvote</a>
                         <a href="https://www.google.com">Downvote</a>
                     </td>
+                    <td>
+                        <%= song.getVotes(@party.id, song.id) %>
+                    </td>
                 </tr>
             <% end %>
         <% end %>

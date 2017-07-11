@@ -87,7 +87,7 @@ class PartiesController < ApplicationController
     #if it isn't add it to Songs
     #Create a songs method that will do this for us
 
-    song = Song.add_song(title, artist)
+    song = Song.add_song(artist, title)
 
     #add a party_songs record no matter what
     new_party_songs = PartySong.create(party_id: party_id, song_id: song.id)
