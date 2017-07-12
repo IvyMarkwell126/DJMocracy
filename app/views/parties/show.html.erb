@@ -42,11 +42,11 @@
                 <tr>
                     <td>
                         <%= song.title %> - <%= song.artist %>
-                        <a href="https://www.google.com">Upvote</a>
-                        <a href="https://www.google.com">Downvote</a>
                     </td>
                     <td>
                         <%= song.getVotes(@party.id, song.id) %>
+                        <%= link_to 'Upvote', party_song_upvote_path(:party_song_id => PartySong.getPartySong(@party.id, song.id), :party_id => @party.id, :song_id => song.id, :user_id => @user.id), method: :put %>
+                        <%= link_to 'Downvote', party_song_downvote_path(:party_song_id => PartySong.getPartySong(@party.id, song.id), :party_id => @party.id, :song_id => song.id, :user_id => @user.id), method: :put %>
                     </td>
                 </tr>
             <% end %>

@@ -12,6 +12,11 @@ class PartySong < ApplicationRecord
 		end
 	end
 
+    def self.getPartySong(party_id, song_id)
+        @party_song = PartySong.find_by party_id: party_id, song_id: song_id
+        @party_song.id
+    end
+
 	def self.import_from_billboard(genre, date, party_id)
 		cd = ::ChartData.new(genre, date)
 		our_array = []

@@ -19,6 +19,10 @@ Rails.application.routes.draw do
   post 'parties/add_song'
   post 'parties/leave_party'
   
+  resources :party_songs do
+    put '/upvote' => 'party_songs#upvote'
+    put '/downvote' => 'party_songs#downvote'
+  end
   #resources :party
     
     #match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]

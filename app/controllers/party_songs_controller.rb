@@ -47,11 +47,11 @@ class PartySongsController < ApplicationController
   def update
     respond_to do |format|
       if @party_song.update(party_song_params)
-        format.html { redirect_to @party_song, notice: 'Party song was successfully updated.' }
-        format.json { render :show, status: :ok, location: @party_song }
+          format.html { redirect_to @party_song, notice: 'Party song was successfully updated.' }
+          format.json { render :show, status: :ok, location: @party_song }
       else
-        format.html { render :edit }
-        format.json { render json: @party_song.errors, status: :unprocessable_entity }
+          format.html { render :edit }
+          format.json { render json: @party_song.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -59,18 +59,36 @@ class PartySongsController < ApplicationController
   # DELETE /party_songs/1
   # DELETE /party_songs/1.json
   def destroy
-    @party_song.destroy
-    respond_to do |format|
-      format.html { redirect_to party_songs_url, notice: 'Party song was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+      @party_song.destroy
+      respond_to do |format|
+          format.html { redirect_to party_songs_url, notice: 'Party song was successfully destroyed.' }
+          format.json { head :no_content }
+      end
+  end
+
+  def upvote
+      @user = User.find(params[:user_id])
+      @party = Party.find(params[:party_id])
+      @party_song = PartySong.find_by party_id: @party.id, song_id: params[:song_id]
+      @party_song.votes += 1
+      @party_song.save!
+      redirect_to user_party_path(@user, @party)
+  end
+
+  def downvote
+      @user = User.find(params[:user_id])
+      @party = Party.find(params[:party_id])
+      @party_song = PartySong.find_by party_id: @party.id, song_id: params[:song_id]
+      @party_song.votes -= 1
+      @party_song.save!
+      redirect_to user_party_path(@user, @party)
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_party_song
+  # Use callbacks to share common setup or constraints between actions.
+  def set_party_song
       @party_song = PartySong.find(params[:id])
-    end
+  end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def party_song_params
@@ -84,4 +102,5 @@ class PartySongsController < ApplicationController
         return input.to_s
       end
     end
+
 end
