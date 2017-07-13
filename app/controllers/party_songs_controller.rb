@@ -67,19 +67,44 @@ class PartySongsController < ApplicationController
   end
 
   def upvote
-      @user = User.find(params[:user_id])
-      @party = Party.find(params[:party_id])
+      user_id = params[:user_id]
+      @user = User.find(user_id)
+      @party = Party.find(params[:party_id])  
       @party_song = PartySong.find_by party_id: @party.id, song_id: params[:song_id]
-      @party_song.votes += 1
+      if PartySong.upvoted.include?(user_id)
+        @party_song.votes -= 1
+        PartySong.upvoted.delete(user_id)
+      else
+          if PartySong.downvoted.include?(user_id)
+              @party_song.votes += 2
+              PartySong.downvoted.delete(user_id)
+          else
+              @party_song.votes += 1
+          end
+          PartySong.upvoted.add(user_id)    
+      end
       @party_song.save!
       redirect_to user_party_path(@user, @party)
   end
 
   def downvote
-      @user = User.find(params[:user_id])
+      user_id = params[:user_id]
+      @user = User.find(user_id)
       @party = Party.find(params[:party_id])
       @party_song = PartySong.find_by party_id: @party.id, song_id: params[:song_id]
-      @party_song.votes -= 1
+
+      if PartySong.downvoted.include?(user_id)
+          @party_song.votes += 1
+          PartySong.downvoted.delete(user_id)
+      else
+          if PartySong.upvoted.include?(user_id)
+              @party_song.votes -= 2
+              PartySong.upvoted.delete(user_id)
+          else
+              @party_song.votes -= 1
+          end
+          PartySong.downvoted.add(user_id)
+      end
       @party_song.save!
       redirect_to user_party_path(@user, @party)
   end

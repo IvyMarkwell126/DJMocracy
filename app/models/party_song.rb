@@ -1,5 +1,18 @@
+require 'set'
+
 class PartySong < ApplicationRecord
-	class Entry
+    @@upvoted = Set.new
+    @@downvoted = Set.new
+
+    def self.upvoted
+        @@upvoted
+    end
+
+    def self.downvoted
+        @@downvoted
+    end
+
+    class Entry
 		attr_accessor :artist, :title
 		
 		def initialize(artist, title)
