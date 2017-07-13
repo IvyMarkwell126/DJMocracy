@@ -25,7 +25,7 @@ td {
 
 
 .votes, .vote {
-    display: block;
+    display: inline-block;
 }
 
 .vote {
