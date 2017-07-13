@@ -18,3 +18,16 @@ body {
 	background-size: cover;
 	color: white;
  	 }
+td {
+    width: 200px;
+    height: 30px;
+}
+
+
+.votes, .vote {
+    display: block;
+}
+
+.vote {
+    vertical-align:middle;
+}
