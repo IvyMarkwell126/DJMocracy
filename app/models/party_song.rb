@@ -1,8 +1,8 @@
 require 'set'
 
 class PartySong < ApplicationRecord
-    @@upvoted = Set.new
-    @@downvoted = Set.new
+    @@upvoted = Hash.new
+    @@downvoted = Hash.new
 
     def self.upvoted
         @@upvoted
@@ -28,6 +28,11 @@ class PartySong < ApplicationRecord
     def self.getPartySong(party_id, song_id)
         @party_song = PartySong.find_by party_id: party_id, song_id: song_id
         @party_song.id
+    end
+
+    def self.clearSets(user_id)
+        self.upvoted[user_id] = Set.new
+        self.downvoted[user_id] = Set.new 
     end
 
 	def self.import_from_billboard(genre, date, party_id)

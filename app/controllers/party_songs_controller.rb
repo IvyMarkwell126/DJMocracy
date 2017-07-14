@@ -59,9 +59,10 @@ class PartySongsController < ApplicationController
   # DELETE /party_songs/1
   # DELETE /party_songs/1.json
   def destroy
+      PartySong.clearSets(params[:user_id])
       @party_song.destroy
       respond_to do |format|
-          format.html { redirect_to party_songs_url, notice: 'Party song was successfully destroyed.' }
+          format.html { redirect_to user_party_path(params[:user_id], params[:party_id]), notice: 'Party song was successfully destroyed.' }
           format.json { head :no_content }
       end
   end
@@ -71,17 +72,23 @@ class PartySongsController < ApplicationController
       @user = User.find(user_id)
       @party = Party.find(params[:party_id])  
       @party_song = PartySong.find_by party_id: @party.id, song_id: params[:song_id]
-      if PartySong.upvoted.include?(user_id)
+
+      if !PartySong.upvoted.include?(user_id)
+        PartySong.upvoted[user_id] = Set.new
+        PartySong.downvoted[user_id] = Set.new
+      end
+
+      if PartySong.upvoted[user_id].include?(@party_song.id)
         @party_song.votes -= 1
-        PartySong.upvoted.delete(user_id)
+        PartySong.upvoted[user_id].delete(@party_song.id)
       else
-          if PartySong.downvoted.include?(user_id)
+          if PartySong.downvoted[user_id].include?(@party_song.id)
               @party_song.votes += 2
-              PartySong.downvoted.delete(user_id)
+              PartySong.downvoted[user_id].delete(@party_song.id)
           else
               @party_song.votes += 1
           end
-          PartySong.upvoted.add(user_id)    
+          PartySong.upvoted[user_id].add(@party_song.id)    
       end
       @party_song.save!
       redirect_to user_party_path(@user, @party)
@@ -93,17 +100,23 @@ class PartySongsController < ApplicationController
       @party = Party.find(params[:party_id])
       @party_song = PartySong.find_by party_id: @party.id, song_id: params[:song_id]
 
-      if PartySong.downvoted.include?(user_id)
+      if !PartySong.downvoted.include?(user_id)
+        PartySong.downvoted[user_id] = Set.new
+        PartySong.upvoted[user_id] = Set.new
+      end
+
+
+      if PartySong.downvoted[user_id].include?(@party_song.id)
           @party_song.votes += 1
-          PartySong.downvoted.delete(user_id)
+          PartySong.downvoted[user_id].delete(@party_song.id)
       else
-          if PartySong.upvoted.include?(user_id)
+          if PartySong.upvoted[user_id].include?(@party_song.id)
               @party_song.votes -= 2
-              PartySong.upvoted.delete(user_id)
+              PartySong.upvoted[user_id].delete(@party_song.id)
           else
               @party_song.votes -= 1
           end
-          PartySong.downvoted.add(user_id)
+          PartySong.downvoted[user_id].add(@party_song.id)
       end
       @party_song.save!
       redirect_to user_party_path(@user, @party)
