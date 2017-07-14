@@ -10,8 +10,18 @@ class PartiesController < ApplicationController
   # GET /parties/1
   # GET /parties/1.json
   def show
-      @user = User.find(params[:user_id]);
-      @songs = @party.songs
+      party_id = params[:id]
+      @user = User.find(params[:user_id])
+      @songs = [] 
+      @party_songs = @party.party_songs
+
+      #have the song ids in the correct order here
+      @party_songs = @party_songs.sort_by {|ps| ps.votes }.reverse!
+
+      @party_songs.each do |ps|  
+        song = Song.find(ps.song_id)
+        @songs << song
+      end
   end
 
   # GET /parties/new
