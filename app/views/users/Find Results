@@ -1,0 +1,60 @@
+Searching 929 files for "your parties"
+
+/Users/ivymarkwell/Desktop/Hacker Fellows/djmocracy/app/views/parties/new.html.erb:
+    1  <%= render 'form', party: @party %>
+    2  
+    3: <%= link_to 'Your Parties', @user %>
+    4  
+    5  
+
+/Users/ivymarkwell/Desktop/Hacker Fellows/djmocracy/app/views/parties/show.html.erb:
+   52  </div>
+   53  
+   54: <%= link_to 'Your Parties', @user %>
+   55  
+
+/Users/ivymarkwell/Desktop/Hacker Fellows/djmocracy/app/views/party_users/new.html.erb:
+    1  <%= render 'form', party_user: @party_user, user_id: @user.id %>
+    2  
+    3: <%= link_to 'Your Parties', @user %>
+    4  
+
+/Users/ivymarkwell/Desktop/Hacker Fellows/djmocracy/app/views/users/show.html.erb:
+    3      <h1>Hello, <%= @user %></h1>
+    4      <div class="table_container"> 
+    5:         <h2>Your Parties</h2>
+    6              <table class="table">
+    7                  <% @user_parties.each do |party| %>
+
+4 matches across 4 files
+
+
+Searching 952 files for "hello"
+
+/Users/ivymarkwell/Desktop/Hacker Fellows/djmocracy/app/views/users/show.html.erb:
+    1  <p id="notice"><%= notice %></p>
+    2  <div class = "center"
+    3:     <h1>Hello, <%= @user %></h1>
+    4      <div class="table_container"> 
+    5          <h2>Your Parties</h2>
+
+/Users/ivymarkwell/Desktop/Hacker Fellows/djmocracy/config/locales/en.yml:
+    5  # To use the locales, use `I18n.t`:
+    6  #
+    7: #     I18n.t 'hello'
+    8  #
+    9  # In views, this is aliased to just `t`:
+   10  #
+   11: #     <%= t('hello') %>
+   12  #
+   13  # To use a different locale, set it with `I18n.locale`:
+   ..
+   31  
+   32  en:
+   33:   hello: "Hello world"
+   34  
+
+/Users/ivymarkwell/Desktop/Hacker Fellows/djmocracy/log/development.log:
+    <binary>
+
+15 matches across 3 files
