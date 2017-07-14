@@ -7,7 +7,7 @@
     <%= form.hidden_field :user_id, :value => @user.id %>
     <%= form.hidden_field :party_id, :value => @party.id %>
     <div class="actions">
-        <%= form.submit 'Leave Party' %>
+        <%= form.submit 'Leave Party', :class => "form_button"%>
     </div>
 <% end %>
 
@@ -29,7 +29,7 @@
     </div>
 
     <div class="actions">
-        <%= form.submit 'Add Song' %>
+        <%= form.submit 'Add Song', :class => "form_button"%>
     </div>
 <% end %>
 <br>

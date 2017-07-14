@@ -14,8 +14,9 @@
  *= require_self
  */
 body {
+	margin: 2%;
 	background: black;
-	font-family: 'Luckiest Guy', cursive;
+	font-family: 'Coming Soon', cursive;
 	color: white;
  	}
 
@@ -42,16 +43,29 @@ td {
 
 a {
 	left: -50%;
-	font-family: 'Luckiest Guy', cursive;
+	font-family: 'Coming Soon', cursive;
 	font-size: 20px;
 	margin-top: 10px;
 	margin-right: 10px;
 }
 
+a:hover, a:active {
+	background-color: gray !important;
+}
+
+td {
+	font-family: 'Coming Soon', cursive;
+}
+
 table {
+	margin-bottom: 20px;
 	text-align: left;
 	height: 100%;
 	width: 100%;
+}
+
+#home_page {
+	font-family: 'Rock Salt', cursive;
 }
 
 #home_page, #fb_login_button {
@@ -70,43 +84,48 @@ table {
 	left: 45%;
 }
 
-button {
-	-moz-box-shadow: 3px 4px 0px 0px #899599;
-	-webkit-box-shadow: 3px 4px 0px 0px #899599;
-	box-shadow: 3px 4px 0px 0px #899599;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #1476cc), color-stop(1, #9fb5bd));
-	background:-moz-linear-gradient(top, #1476cc 5%, #9fb5bd 100%);
-	background:-webkit-linear-gradient(top, #1476cc 5%, #9fb5bd 100%);
-	background:-o-linear-gradient(top, #1476cc 5%, #9fb5bd 100%);
-	background:-ms-linear-gradient(top, #1476cc 5%, #9fb5bd 100%);
-	background:linear-gradient(to bottom, #1476cc 5%, #9fb5bd 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#1476cc', endColorstr='#9fb5bd',GradientType=0);
-	background-color:#1476cc;
-	-moz-border-radius:15px;
-	-webkit-border-radius:15px;
-	border-radius:15px;
+button, .form_button {
+	margin-bottom: 20px;
+	font-family: inherit !important;
+    -moz-box-shadow: 3px 4px 0px 0px #696569;
+	-webkit-box-shadow: 3px 4px 0px 0px #696569;
+	box-shadow: 3px 4px 0px 0px #696569;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #757575), color-stop(1, #c2c2c2));
+	background:-moz-linear-gradient(top, #757575 5%, #c2c2c2 100%);
+	background:-webkit-linear-gradient(top, #757575 5%, #c2c2c2 100%);
+	background:-o-linear-gradient(top, #757575 5%, #c2c2c2 100%);
+	background:-ms-linear-gradient(top, #757575 5%, #c2c2c2 100%);
+	background:linear-gradient(to bottom, #757575 5%, #c2c2c2 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#757575', endColorstr='#c2c2c2',GradientType=0);
+	background-color:#757575;
 	border:1px solid #000000;
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;
 	font-size:17px;
-	padding:7px 25px;
+	font-weight:bold;
+	padding:4px 4px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #000000;
 }
-button:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #9fb5bd), color-stop(1, #1476cc));
-	background:-moz-linear-gradient(top, #9fb5bd 5%, #1476cc 100%);
-	background:-webkit-linear-gradient(top, #9fb5bd 5%, #1476cc 100%);
-	background:-o-linear-gradient(top, #9fb5bd 5%, #1476cc 100%);
-	background:-ms-linear-gradient(top, #9fb5bd 5%, #1476cc 100%);
-	background:linear-gradient(to bottom, #9fb5bd 5%, #1476cc 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#9fb5bd', endColorstr='#1476cc',GradientType=0);
-	background-color:#9fb5bd
+}
+button:hover, .form_button:hover {
+	margin-bottom: 20px;
+	font-family: inherit;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #c2c2c2), color-stop(1, #757575));
+	background:-moz-linear-gradient(top, #c2c2c2 5%, #757575 100%);
+	background:-webkit-linear-gradient(top, #c2c2c2 5%, #757575 100%);
+	background:-o-linear-gradient(top, #c2c2c2 5%, #757575 100%);
+	background:-ms-linear-gradient(top, #c2c2c2 5%, #757575 100%);
+	background:linear-gradient(to bottom, #c2c2c2 5%, #757575 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2c2c2', endColorstr='#757575',GradientType=0);
+	background-color:#c2c2c2;
 }
 
-button:active {
+button:active, .form_button:hover {
+	margin-bottom: 20px;
+	font-family: inherit;
 	position:relative;
 	top:1px;
 }
@@ -116,5 +135,9 @@ button:active {
 	float: right;
   	left: -50%; /* or right 50% */
   	text-align: left;
+}
+
+.link_color, a, a:link, a:visited {
+	color: white;
 }
 
