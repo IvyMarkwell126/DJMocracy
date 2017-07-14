@@ -59,9 +59,10 @@ class PartySongsController < ApplicationController
   # DELETE /party_songs/1
   # DELETE /party_songs/1.json
   def destroy
+      PartySong.clearSets(params[:user_id])
       @party_song.destroy
       respond_to do |format|
-          format.html { redirect_to party_songs_url, notice: 'Party song was successfully destroyed.' }
+          format.html { redirect_to user_party_path(params[:user_id], params[:party_id]), notice: 'Party song was successfully destroyed.' }
           format.json { head :no_content }
       end
   end

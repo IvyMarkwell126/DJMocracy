@@ -54,6 +54,8 @@
                         <div class="vote">
                             <%= link_to image_tag("like.png", :size => "20x20"), party_song_upvote_path(:party_song_id => PartySong.getPartySong(@party.id, song.id), :party_id => @party.id, :song_id => song.id, :user_id => @user.id), method: :put %>
                         </div>
+
+                        <%= link_to image_tag("redx.png", :size => "20x20"), party_song_path(PartySong.getPartySong(@party.id, song.id), :party_id => @party.id, :user_id => @user.id), method: :delete %>
                     </td>
                 </tr>
             <% end %>

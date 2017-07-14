@@ -30,6 +30,11 @@ class PartySong < ApplicationRecord
         @party_song.id
     end
 
+    def self.clearSets(user_id)
+        self.upvoted[user_id] = Set.new
+        self.downvoted[user_id] = Set.new 
+    end
+
 	def self.import_from_billboard(genre, date, party_id)
 		cd = ::ChartData.new(genre, date)
 		our_array = []
