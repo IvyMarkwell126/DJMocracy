@@ -74,8 +74,8 @@ function statusChangeCallback(response) {
     } else {
         if(document.getElementById('home_page') === null){
             console.log('Nobody is currently logged in');
-            //var home_page = 'http://localhost:3000/';
-            var home_page = 'https://djmocracy.herokuapp.com/'
+            var home_page = 'http://localhost:3000/';
+            //var home_page = 'https://djmocracy.herokuapp.com/'
             window.open(home_page, '_self');
         }
     }
@@ -85,9 +85,9 @@ function statusChangeCallback(response) {
 initializeFacebookSDK = function() {
       FB.init({
               //test ID
-              //appId: '101362207154011',
+              appId: '101362207154011',
               //prod ID
-              appId: '114856275788196',
+              //appId: '114856275788196',
               status: true,
               cookie: true,
               xfbml: true,

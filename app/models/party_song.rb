@@ -1,8 +1,8 @@
 require 'set'
 
 class PartySong < ApplicationRecord
-    @@upvoted = Set.new
-    @@downvoted = Set.new
+    @@upvoted = Hash.new
+    @@downvoted = Hash.new
 
     def self.upvoted
         @@upvoted
